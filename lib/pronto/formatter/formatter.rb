@@ -11,6 +11,9 @@ module Pronto
     end
 
     FORMATTERS = {
+      'chavapa' => ChavapaFormatter,
+      'chavapa_status' => ChavapaStatusFormatter,
+      'chavapa_pr' => ChavapaPullRequestFormatter,
       'github' => GithubFormatter,
       'github_status' => GithubStatusFormatter,
       'github_pr' => GithubPullRequestFormatter,
