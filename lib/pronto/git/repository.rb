@@ -4,6 +4,7 @@ module Pronto
   module Git
     class Repository
       def initialize(path)
+        @path = path
         @repo = Rugged::Repository.new(path)
       end
 
@@ -45,13 +46,13 @@ module Pronto
       end
 
       def path
-        Pathname.new(@repo.path).parent
+        Pathname.new(@path)
       end
 
       def blame(path, lineno)
         Rugged::Blame.new(@repo, path, min_line: lineno, max_line: lineno,
-                                       track_copies_same_file: true,
-                                       track_copies_any_commit_copies: true)[0]
+                          track_copies_same_file: true,
+                          track_copies_any_commit_copies: true)[0]
       end
 
       def branch
