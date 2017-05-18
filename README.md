@@ -14,7 +14,7 @@ to your [styleguide](https://github.com/mmozuras/pronto-rubocop), [are DRY](http
 
 ![Pronto demo](pronto.gif "")
 
-_This README might be ahead of the latest release. Find the README for v0.8.2 [here](https://github.com/mmozuras/pronto/blob/v0.8.2/README.md)._
+_This README might be ahead of the latest release. Find the README for v0.9.2 [here](https://github.com/mmozuras/pronto/blob/v0.9.2/README.md)._
 
 * [Installation](#installation)
 * [Usage](#usage)
@@ -105,10 +105,16 @@ Then just run it:
 $ PRONTO_GITHUB_ACCESS_TOKEN=token pronto run -f github -c origin/master
 ```
 
-or, if you want comments to appear on pull request diff, instead of commit:
+If you want comments to appear on pull request diff, instead of commit:
 
 ```sh
 $ PRONTO_GITHUB_ACCESS_TOKEN=token pronto run -f github_pr -c origin/master
+```
+
+If you want review to appear on pull request diff, instead of comments:
+
+```sh
+$ PRONTO_GITHUB_ACCESS_TOKEN=token pronto run -f github_pr_review -c origin/master
 ```
 
 Use `GithubStatusFormatter` to submit [commit status](https://github.com/blog/1227-commit-status-api):
@@ -121,7 +127,7 @@ It's possible to combine multiple formatters.
 To get both pull request comments and commit status summary use:
 
 ```sh
-$ PRONTO_GITHUB_ACCESS_TOKEN=token PULL_REQUEST_ID=id pronto run -f github_status github_pr -c origin/master
+$ PRONTO_GITHUB_ACCESS_TOKEN=token PRONTO_PULL_REQUEST_ID=id pronto run -f github_status github_pr -c origin/master
 ```
 
 As an alternative, you can also set up a rake task:
@@ -129,7 +135,7 @@ As an alternative, you can also set up a rake task:
 ```ruby
 Pronto::GemNames.new.to_a.each { |gem_name| require "pronto/#{gem_name}" }
 
-formatter = Pronto::Formatter::GithubFormatter.new # or GithubPullRequestFormatter
+formatter = Pronto::Formatter::GithubFormatter.new # also possible: GithubPullRequestFormatter, GithubPullRequestReviewFormatter
 status_formatter = Pronto::Formatter::GithubStatusFormatter.new
 formatters = [formatter, status_formatter]
 Pronto.run('origin/master', '.', formatters)

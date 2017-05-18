@@ -56,7 +56,7 @@ module Pronto
             .once
             .and_return([comment])
 
-          ENV['PULL_REQUEST_ID'] = '10'
+          ENV['PRONTO_PULL_REQUEST_ID'] = '10'
 
           subject
           subject
@@ -93,13 +93,13 @@ module Pronto
                 context: context, description: desc)
           .once
       end
-      after { ENV.delete('PULL_REQUEST_ID') }
+      after { ENV.delete('PRONTO_PULL_REQUEST_ID') }
 
-      context 'uses PULL_REQUEST_ID to create commit status' do
+      context 'uses PRONTO_PULL_REQUEST_ID to create commit status' do
         let(:pull_request_sha) { '123456' }
         let(:expected_sha) { pull_request_sha }
 
-        before { ENV['PULL_REQUEST_ID'] = '10' }
+        before { ENV['PRONTO_PULL_REQUEST_ID'] = '10' }
 
         specify do
           octokit_client
@@ -114,11 +114,63 @@ module Pronto
       context 'adds status to commit with sha' do
         let(:expected_sha) { sha }
 
-        before { ENV.delete('PULL_REQUEST_ID') }
+        before { ENV.delete('PRONTO_PULL_REQUEST_ID') }
 
         specify do
           octokit_client
             .should_not_receive(:pull_requests)
+
+          subject
+        end
+      end
+    end
+
+    describe '#create_pull_request_review' do
+      subject { github.create_pull_request_review(comments) }
+
+      let(:octokit_client) { double(Octokit::Client) }
+
+      before do
+        github.instance_variable_set(:@client, octokit_client)
+      end
+
+      context 'with no comments' do
+        let(:comments) { [] }
+
+        specify do
+          octokit_client.should_not_receive(:create_pull_request_review)
+          subject
+        end
+      end
+
+      context 'with comments' do
+        before do
+          github.should_receive(:pull_id).once.and_return(pull_id)
+        end
+
+        let(:pull_id) { 10 }
+        let(:comments) do
+          [
+            double(path: 'bad_file.rb', position: 10, body: 'Offense #1'),
+            double(path: 'bad_file.rb', position: 20, body: 'Offense #2')
+          ]
+        end
+        let(:options) do
+          {
+            event: 'COMMENT',
+            accept: 'application/vnd.github.black-cat-preview+json',
+            comments: [
+              { path: 'bad_file.rb', position: 10, body: 'Offense #1' },
+              { path: 'bad_file.rb', position: 20, body: 'Offense #2' }
+            ]
+          }
+        end
+
+        specify do
+          octokit_client
+            .should_not_receive(:create_pull_request_review)
+            .with('mmozuras/pronto', pull_id, options)
+            .once
 
           subject
         end

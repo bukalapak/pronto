@@ -2,6 +2,30 @@
 
 ## Unreleased
 
+### Bugs fixed
+
+* [#235](https://github.com/prontolabs/pronto/pull/235): do not submit empty pull request reviews to GitHub.
+
+## 0.9.3
+
+### Bugs fixed
+
+* [#234](https://github.com/prontolabs/pronto/pull/234): text formatter was not working, require delegate.rb in text_message_decorator.rb to fix.
+
+## 0.9.2
+
+### Bugs fixed
+
+* [#231](https://github.com/mmozuras/pronto/pull/231): GitHub pull request review formatter was not working in some cases without Accept header.
+
+## 0.9.1
+
+### Bugs fixed
+
+* Poper and some other runners were not working correctly. When using staged/unstaged flags, pass a string instead of Rugged::Commit as commit parameter for runners.
+
+## 0.9.0
+
 ### New features
 
 * [#206](https://github.com/mmozuras/pronto/pull/216): add Bitbucket Server pull request formatter.
@@ -15,6 +39,7 @@
 * [#49](https://github.com/mmozuras/pronto/issues/49): handle non-existance of GitHub pull requests gracefully.
 * [#217](https://github.com/mmozuras/pronto/issues/217): depend on `octokit >= 4.7.0`.
 * [#224](https://github.com/mmozuras/pronto/issues/224): depend on `gitlab >= 4.0.0`.
+* [#222](https://github.com/mmozuras/pronto/pull/184): prefix PULL_REQUEST_ID env variable with `PRONTO_`.
 
 ### Bugs fixed
 
