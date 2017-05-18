@@ -14,6 +14,7 @@ module Pronto
       'chavapa' => ChavapaFormatter,
       'chavapa_status' => ChavapaStatusFormatter,
       'chavapa_pr' => ChavapaPullRequestFormatter,
+      'chavapa_pr_review' => ChavapaPullRequestReviewFormatter,
       'github' => GithubFormatter,
       'github_status' => GithubStatusFormatter,
       'github_pr' => GithubPullRequestFormatter,
